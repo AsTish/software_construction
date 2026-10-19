@@ -1,48 +1,47 @@
 # Лабораторная работа №1 — парсер пакетов задач
 
-## Выполненные подзадания
-
-- Разбор пакета KRSU: **[+]**
-- Разбор пакета CATS: **[+]**
-- Разбор пакета EJUDGE: **[+]**
-- Разбор пакета PCMS2: **[+]**
-
-## Требования
-
-- Python 3.10 или новее.
+Программа разбирает ZIP-пакеты олимпиадных задач форматов `KRSU`, `CATS`,
+`EJUDGE` и `PCMS2`.
 
 ## Запуск
 
-```powershell
-python main.py KRSU <путь_к_testinfo.xml>
-python main.py CATS <путь_к_описанию_задачи.xml>
-python main.py EJUDGE <путь_к_problem.cfg>
-python main.py PCMS2 <путь_к_problem.xml>
+Поддерживаются два равнозначных варианта с одним интерфейсом:
+
+```text
+Program.exe [FORMAT] [PACKAGE]
+python main.py [FORMAT] [PACKAGE]
 ```
+
+`FORMAT` — `KRSU`, `CATS`, `EJUDGE` или `PCMS2`.
+`PACKAGE` — путь к ZIP-архиву либо к распакованной папке пакета.
 
 Примеры:
 
 ```powershell
-python main.py KRSU "..\lab_1-task\KRSU\A\testinfo.xml"
-python main.py CATS "..\lab_1-task\CATS\area51.xml"
-python main.py EJUDGE "..\lab_1-task\EJUDGE\sample\problem.cfg"
-python main.py PCMS2 "..\lab_1-task\PCMS2\dungeon\problem.xml"
+.\dist\Program.exe CATS "D:\me\projects\uni\7 sem\software_construction\5295.ZIP"
+python main.py KRSU "D:\me\projects\uni\7 sem\software_construction\5295.ZIP"
+python main.py EJUDGE "D:\me\projects\uni\7 sem\software_construction\5295.ZIP"
 ```
 
-## Результат
+Если архив содержит несколько форматов, программа ищет описание в папке с
+именем выбранного формата: например, при `CATS` — внутри `CATS/`. Если внутри
+одной такой папки лежат несколько самостоятельных пакетов, программа сообщает
+об этом, а не выбирает один случайно. Тогда передайте ZIP одного пакета или его
+распакованную папку.
 
-Для KRSU программа выводит метаданные из `testinfo.xml`, группы и перечень тестов.
+Готовый исполняемый файл находится в `dist/Program.exe`.
 
-Для CATS программа выводит полную структуру XML-описания задачи: атрибуты `Problem`, текстовые разделы, примеры, решения, checker, генераторы, валидаторы, импорты, тесты и другие элементы формата.
+## Повторная сборка EXE
 
-Для EJUDGE программа читает параметры из `problem.cfg`, глобальные параметры и группы тестов из `valuer.cfg`.
+Нужны Python 3.10+ и PyInstaller:
 
-Для PCMS2 программа выводит полную структуру `problem.xml`: сведения о задаче, тестовые наборы и группы, statements, assets, решения, checker, валидаторы, documents и остальные элементы.
+```powershell
+python -m pip install pyinstaller
+.\build_exe.bat
+```
 
 ## Проверка
 
 ```powershell
 python -m unittest discover -s tests -v
 ```
-
-Тесты используют папки из `../lab_1-task` относительно корня проекта.
