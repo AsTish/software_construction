@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Ignore directories with 'task' in the name (only directories)
 *task*/
+*solution.zip
