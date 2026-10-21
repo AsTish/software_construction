@@ -8,9 +8,9 @@ from .source import PackageSource
 class KrsuPackageParser:
     """Преобразует обязательный testinfo.xml в предметную модель."""
 
-    def parse(self, source: PackageSource) -> KrsuPackage:
+    def parse(self, source: PackageSource, descriptor: str = "testinfo.xml") -> KrsuPackage:
         try:
-            root = ElementTree.fromstring(source.read_text("testinfo.xml"))
+            root = ElementTree.fromstring(source.read_text(descriptor))
         except ElementTree.ParseError as error:
             raise InvalidPackageError("Файл testinfo.xml содержит некорректный XML.") from error
         if root.tag != "testinfo":

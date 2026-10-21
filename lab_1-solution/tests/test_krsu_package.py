@@ -7,7 +7,7 @@ from tempfile import TemporaryDirectory
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from krsu_parser.application import ParsePackageUseCase
-from krsu_parser.errors import InvalidPackageError, UnsupportedFormatError
+from krsu_parser.errors import InvalidPackageError
 from krsu_parser.parser import KrsuPackageParser
 from krsu_parser.presentation import KrsuReportFormatter
 from krsu_parser.source import open_package_source
@@ -65,8 +65,8 @@ class KrsuPackageTests(unittest.TestCase):
         )
         self.assertIn("Tests: 27", report)
 
-    def test_other_format_is_rejected(self) -> None:
-        with self.assertRaises(UnsupportedFormatError):
+    def test_other_format_xml_is_validated_by_its_parser(self) -> None:
+        with self.assertRaises(InvalidPackageError):
             ParsePackageUseCase(KrsuPackageParser(), KrsuReportFormatter()).execute("PCMS2", self.krsu)
 
     def test_invalid_xml_is_rejected(self) -> None:
